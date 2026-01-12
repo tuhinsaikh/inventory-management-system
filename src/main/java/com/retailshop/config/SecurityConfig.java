@@ -9,8 +9,6 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,7 +17,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
@@ -28,18 +25,39 @@ public class SecurityConfig {
     private final UserDetailsService userDetailsService;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/actuator/**").permitAll()
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/manager/**").hasAnyRole("ADMIN", "MANAGER")
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(authz -> authz
+                        // ✅ PUBLIC API ENDPOINTS
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/categories").permitAll()
+                        .requestMatchers("/api/products").permitAll()
+                        .requestMatchers("/api/products/search").permitAll()
+
+                        // ✅ SWAGGER - BOTH CONTEXT PATH AND ROOT (DOUBLE WHITELIST)
+                        .requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers("/swagger-ui.html").permitAll()
+                        .requestMatchers("/api/swagger-ui/**").permitAll()
+                        .requestMatchers("/api/swagger-ui.html").permitAll()
+                        .requestMatchers("/v3/api-docs/**").permitAll()
+                        .requestMatchers("/v3/api-docs").permitAll()
+                        .requestMatchers("/v3/api-docs.yaml").permitAll()
+                        .requestMatchers("/api/v3/api-docs/**").permitAll()
+                        .requestMatchers("/api/v3/api-docs").permitAll()
+                        .requestMatchers("/api/v3/api-docs.yaml").permitAll()
+
+                        // ✅ STATIC RESOURCES
+                        .requestMatchers("/webjars/**").permitAll()
+                        .requestMatchers("/api/webjars/**").permitAll()
+
+                        // ✅ H2 Console
+                        .requestMatchers("/h2-console/**").permitAll()
+
+                        // ✅ REQUIRE JWT FOR REST
                         .anyRequest().authenticated()
                 )
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -64,4 +82,3 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 }
-
