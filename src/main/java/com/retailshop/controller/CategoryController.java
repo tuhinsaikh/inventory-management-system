@@ -74,7 +74,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<ApiResponse<Category>> createCategory(@RequestBody Category category) {
         Category createdCategory = categoryService.createCategory(category);
         ApiResponse<Category> response = ApiResponse.<Category>builder()
@@ -86,7 +86,7 @@ public class CategoryController {
     }
 
     @PutMapping("/{categoryId}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<ApiResponse<Category>> updateCategory(
             @PathVariable Long categoryId,
             @RequestBody Category category) {
@@ -100,7 +100,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/{categoryId}")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<String>> deleteCategory(@PathVariable Long categoryId) {
         categoryService.deleteCategory(categoryId);
         ApiResponse<String> response = ApiResponse.<String>builder()

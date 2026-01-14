@@ -31,9 +31,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         // ✅ PUBLIC API ENDPOINTS
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/categories").permitAll()
-                        .requestMatchers("/api/products").permitAll()
+                        .requestMatchers("/api/categories/**").permitAll()
+                        .requestMatchers("/api/products/**").permitAll()
                         .requestMatchers("/api/products/search").permitAll()
+                        .requestMatchers("/api/inventory/**").permitAll()
+                        .requestMatchers("/api/warehouses/**").permitAll()
 
                         // ✅ SWAGGER - BOTH CONTEXT PATH AND ROOT (DOUBLE WHITELIST)
                         .requestMatchers("/swagger-ui/**").permitAll()
@@ -55,7 +57,7 @@ public class SecurityConfig {
                         .requestMatchers("/h2-console/**").permitAll()
 
                         // ✅ REQUIRE JWT FOR REST
-                        .anyRequest().authenticated()
+//                        .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())

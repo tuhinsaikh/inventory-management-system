@@ -1,5 +1,6 @@
 package com.retailshop.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,9 +35,11 @@ public class Category {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_category_id")
+    @JsonIgnore
     private Category parentCategory;
 
     @OneToMany(mappedBy = "parentCategory")
+    @JsonIgnore
     private List<Category> subCategories = new ArrayList<>();
 
     @Column(nullable = false)

@@ -76,7 +76,7 @@ public class ProductController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<ApiResponse<ProductResponse>> createProduct(@Valid @RequestBody ProductRequest request) {
         ProductResponse product = productService.createProduct(request);
         ApiResponse<ProductResponse> response = ApiResponse.<ProductResponse>builder()
@@ -88,7 +88,7 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<ApiResponse<ProductResponse>> updateProduct(
             @PathVariable Long productId,
             @Valid @RequestBody ProductRequest request) {
@@ -102,7 +102,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{productId}")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<String>> deleteProduct(@PathVariable Long productId) {
         productService.deleteProduct(productId);
         ApiResponse<String> response = ApiResponse.<String>builder()
@@ -114,7 +114,7 @@ public class ProductController {
     }
 
     @PatchMapping("/{productId}/deactivate")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<ApiResponse<String>> deactivateProduct(@PathVariable Long productId) {
         productService.deactivateProduct(productId);
         ApiResponse<String> response = ApiResponse.<String>builder()
