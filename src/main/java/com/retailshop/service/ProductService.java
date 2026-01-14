@@ -77,6 +77,7 @@ public class ProductService implements IProductService {
         product.setReorderPoint(request.getReorderPoint());
         product.setReorderQuantity(request.getReorderQuantity());
         product.setImageUrl(request.getImageUrl());
+        product.setSku(request.getSku());
 
         product = productRepository.save(product);
         return convertToResponse(product);
