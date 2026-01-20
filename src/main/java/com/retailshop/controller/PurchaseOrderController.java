@@ -77,7 +77,6 @@ public class PurchaseOrderController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<ApiResponse<PurchaseOrderResponse>> createPurchaseOrder(@Valid @RequestBody PurchaseOrderRequest request) {
         PurchaseOrderResponse order = purchaseOrderService.createPurchaseOrder(request);
         ApiResponse<PurchaseOrderResponse> response = ApiResponse.<PurchaseOrderResponse>builder()
@@ -89,7 +88,6 @@ public class PurchaseOrderController {
     }
 
     @PutMapping("/{poId}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<ApiResponse<PurchaseOrderResponse>> updatePurchaseOrder(
             @PathVariable Long poId,
             @Valid @RequestBody PurchaseOrderRequest request) {
@@ -103,7 +101,6 @@ public class PurchaseOrderController {
     }
 
     @PatchMapping("/{poId}/approve")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<ApiResponse<PurchaseOrderResponse>> approvePurchaseOrder(@PathVariable Long poId) {
         PurchaseOrderResponse order = purchaseOrderService.approvePurchaseOrder(poId);
         ApiResponse<PurchaseOrderResponse> response = ApiResponse.<PurchaseOrderResponse>builder()
@@ -115,7 +112,6 @@ public class PurchaseOrderController {
     }
 
     @PatchMapping("/{poId}/receive")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'STAFF')")
     public ResponseEntity<ApiResponse<PurchaseOrderResponse>> receivePurchaseOrder(@PathVariable Long poId) {
         PurchaseOrderResponse order = purchaseOrderService.receivePurchaseOrder(poId);
         ApiResponse<PurchaseOrderResponse> response = ApiResponse.<PurchaseOrderResponse>builder()
@@ -127,7 +123,6 @@ public class PurchaseOrderController {
     }
 
     @PatchMapping("/{poId}/cancel")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<ApiResponse<PurchaseOrderResponse>> cancelPurchaseOrder(@PathVariable Long poId) {
         PurchaseOrderResponse order = purchaseOrderService.cancelPurchaseOrder(poId);
         ApiResponse<PurchaseOrderResponse> response = ApiResponse.<PurchaseOrderResponse>builder()
@@ -139,7 +134,6 @@ public class PurchaseOrderController {
     }
 
     @DeleteMapping("/{poId}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<String>> deletePurchaseOrder(@PathVariable Long poId) {
         purchaseOrderService.deletePurchaseOrder(poId);
         ApiResponse<String> response = ApiResponse.<String>builder()

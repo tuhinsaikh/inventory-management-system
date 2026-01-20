@@ -41,7 +41,6 @@ public class SupplierController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<ApiResponse<Supplier>> createSupplier(@RequestBody Supplier supplier) {
         Supplier createdSupplier = supplierService.createSupplier(supplier);
         ApiResponse<Supplier> response = ApiResponse.<Supplier>builder()
@@ -53,7 +52,6 @@ public class SupplierController {
     }
 
     @PutMapping("/{supplierId}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<ApiResponse<Supplier>> updateSupplier(
             @PathVariable Long supplierId,
             @RequestBody Supplier supplier) {
@@ -67,7 +65,6 @@ public class SupplierController {
     }
 
     @DeleteMapping("/{supplierId}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<String>> deleteSupplier(@PathVariable Long supplierId) {
         supplierService.deleteSupplier(supplierId);
         ApiResponse<String> response = ApiResponse.<String>builder()

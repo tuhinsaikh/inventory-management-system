@@ -36,6 +36,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/products/search").permitAll()
                         .requestMatchers("/api/inventory/**").permitAll()
                         .requestMatchers("/api/warehouses/**").permitAll()
+                        .requestMatchers("/api/**").permitAll()
 
                         // ✅ SWAGGER - BOTH CONTEXT PATH AND ROOT (DOUBLE WHITELIST)
                         .requestMatchers("/swagger-ui/**").permitAll()
